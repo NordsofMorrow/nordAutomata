@@ -1,1 +1,6 @@
+Click
+loguru
+opencv-python
+pydantic
+pyyaml
 twitchio
