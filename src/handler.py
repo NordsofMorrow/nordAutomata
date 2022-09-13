@@ -22,6 +22,6 @@ def gather(**kwargs):
 
         tokens[arg] = conf
 
-    print(tokens)
-
     return tokens
+
+

@@ -1,6 +1,6 @@
 Click
 loguru
-opencv-python
+pyglet
 pydantic
 pyyaml
 twitchio

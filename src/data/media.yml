@@ -1,0 +1,29 @@
+---
+freely:
+  alias: 
+    - nonono
+  location: ~/Documents/OBS/mp3s/freely.mp3
+
+"no":
+  alias:
+    - dawg
+  location: ~/Documents/OBS/mp3s/no_dawg.mp3
+
+f:
+  alias: 
+    - runsover
+  location: ~/Documents/OBS/mp3s/runs_over.mp3
+
+terrible:
+  alias:
+    - martha
+  location: ~/Documents/OBS/mp3s/you_are_terrible.mp3
+
+wow:
+  alias:
+    - anime
+  location: ~/Documents/OBS/mp3s/wow.mp3
+
+rock:
+  location: ~/Documents/OBS/mp3s/its_a_rock.mp3
+
