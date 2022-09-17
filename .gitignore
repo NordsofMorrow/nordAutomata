@@ -130,5 +130,5 @@ dmypy.json
 
 # Twitch-specific
 .vscode
-tokens.yml
-videos.yml
+token.yml
+media.yml

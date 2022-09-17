@@ -4,3 +4,4 @@ pyglet
 pydantic
 pyyaml
 twitchio
+pre-commit

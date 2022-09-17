@@ -2,6 +2,6 @@
 username: example
 token: example_token
 prefix: "!"
-initial_channels: 
+initial_channels:
   - channel_example
 persist: true

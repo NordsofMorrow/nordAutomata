@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import asyncio
 import logging
+from pathlib import Path
 
-from twitchio.ext import commands, routines
 import loguru
 import pydantic
+from twitchio.ext import commands, routines
 
-from handler import gather
+from configs import gather
 
 
 class Bot(commands.Bot):
@@ -19,12 +20,12 @@ class Bot(commands.Bot):
     persist = False
     be_loud = True
 
-    def __init__(self, configurations: dict):
+    def __init__(self, configurations: dict | None = None):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
 
-        config = gather(**configurations)["tokens"]
+        config = gather()["token"]
         self.persist = config["persist"]
         self.nick = config["nick"]
 
@@ -33,6 +34,11 @@ class Bot(commands.Bot):
             prefix=config["prefix"],
             initial_channels=config["initial_channels"],
         )
+
+        # Add found cogs
+        for file in sorted(Path("cogs").iterdir()):
+            if file.suffix == ".py":
+                self.load_module(f"cogs.{file.stem}")
 
     async def _channel_send(self, channel, message):
         chan = self.get_channel(channel)
@@ -43,23 +49,25 @@ class Bot(commands.Bot):
         # Notify us when everything is ready!
         # We are logged in and ready to chat and use commands...
 
-        print(f"Logged in as | {self.nick}")
-        print(f"User id is | {self.user_id}")
+        logging.info(f"Logged in as | {self.nick}")
+        logging.info(f"User id is | {self.user_id}")
         if self.nick:
-            print(f"{self.nick} is online!")
+            print(f"{self.nick}Bot is online!")
 
         await self._channel_send(
             "NordsofMorrow", f"/me (or rather {self.nick}) has landed!"
         )
         print("Let's make some magic!")
-        self.keep_alive.start("NordsofMorrow")
+        self.hydrate.start("NordsofMorrow")
 
-    @routines.routine(seconds=10)
-    async def keep_alive(self, channel):
-        msg = "/me is staying alive!"
-
-        logging.warning(msg)
-        await self._channel_send(channel, msg)
+    @routines.routine(minutes=10)
+    async def hydrate(self, channel):
+        if self.hydrate.completed_iterations != 0:
+            logging.info(f"hydrate routine started at {self.hydrate.start_time}")
+        else:
+            msg = "/me should be drinking water!"
+            logging.warning(msg.replace("/me", "I"))
+            await self._channel_send(channel, msg)
 
     # @commands.command(aliases=("doit",))
     # async def make_it_happen(self, ctx):
@@ -80,24 +88,16 @@ class Bot(commands.Bot):
             elif ctx.author.is_mod:
                 await ctx.send(f"Oh hi, {ctx.author.name}!")
 
-
     async def event_message(self, message):
-        # Messages with echo set to True are messages sent by the bot...
-        # For now we just want to ignore them...
         if message.echo:
             return
 
-        # Print the contents of our message to console...
         print(message.content)
 
-        # Since we have commands and are overriding the default `event_message`
-        # We must let the bot know we want to handle and invoke our commands...
         await self.handle_commands(message)
 
 
 if __name__ == "__main__":
-    configurations = dict(TWITCHCONF="tokens", VIDEOCONF="videos")
-
-    bot = Bot(configurations)
+    bot = Bot()
     bot.run()
     # bot.run() is blocking and will stop execution of any below code here until stopped or closed.

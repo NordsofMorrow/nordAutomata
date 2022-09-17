@@ -1,6 +1,6 @@
 ---
 freely:
-  alias: 
+  alias:
     - nonono
   location: ~/Documents/OBS/mp3s/freely.mp3
 
@@ -10,7 +10,7 @@ freely:
   location: ~/Documents/OBS/mp3s/no_dawg.mp3
 
 f:
-  alias: 
+  alias:
     - runsover
   location: ~/Documents/OBS/mp3s/runs_over.mp3
 
@@ -26,4 +26,3 @@ wow:
 
 rock:
   location: ~/Documents/OBS/mp3s/its_a_rock.mp3
-
