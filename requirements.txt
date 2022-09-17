@@ -1,7 +1,8 @@
 Click
+black
 loguru
 pyglet
-pydantic
 pyyaml
-twitchio[sounds]  # requires pyaudio and ffmpeg which doesn't install well using pip under Anaconda
+spotipy
+twitchio  # sounds really doesn't work
 pre-commit

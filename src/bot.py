@@ -6,7 +6,7 @@ from pathlib import Path
 
 import loguru
 import pydantic
-from twitchio.ext import commands, routines
+from twitchio.ext import commands, routines, sounds
 
 from configs import gather
 
@@ -43,6 +43,9 @@ class Bot(commands.Bot):
             if file.suffix == ".py":
                 self.load_module(f"cogs.{file.stem}")
 
+        # Initialize sound runner
+        self.player = sounds.AudioPlayer(callback=self.player_done)
+
     async def _channel_send(self, channel, message):
         chan = self.get_channel(channel)
         loop = asyncio.get_event_loop()
@@ -62,6 +65,16 @@ class Bot(commands.Bot):
         )
         print("Let's make some magic!")
         self.hydrate.start("NordsofMorrow")
+
+    async def player_done(self):
+        print("Finished playing song!")
+
+    @commands.command(aliases=("yt",))
+    async def play(self, ctx: commands.Context, *, search: str) -> None:
+        track = await sounds.Sound.ytdl_search(search)
+        self.player.play(track)
+
+        await ctx.send(f"Now playing: {track.title}")
 
     @routines.routine(minutes=10)
     async def hydrate(self, channel):

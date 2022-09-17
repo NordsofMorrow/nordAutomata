@@ -1,5 +1,4 @@
-from twitchio.ext import commands, sounds
-import cv2
+from twitchio.ext import commands
 
 from pathlib import Path
 from typing import Union
@@ -41,21 +40,6 @@ class SoundCog(commands.Cog):
             return
         logging.info(f"{__file__} is loaded!")
 
-    @commands.Cog.event()
-    async def event_ready(self) -> None:
-        print("Successfully logged in!")
-
-    @commands.Cog.event()
-    async def player_done(self):
-        print("Finished playing song!")
-
-    @commands.command()
-    async def play(self, ctx: commands.Context, *, search: str) -> None:
-        track = await sounds.Sound.ytdl_search(search)
-        self.player.play(track)
-
-        await ctx.send(f"Now playing: {track.title}")
-
 
 class VideoCog(commands.Cog):
     # TODO: This should be the class that creates commands based on the entries in videos.yml
@@ -69,16 +53,6 @@ class VideoCog(commands.Cog):
         if message.echo:
             return
         logging.info(f"{__file__} is loaded!")
-
-    @commands.command()
-    async def play_sound(self, sound_url: Union[str, Path]):
-        # Play sounds using openCV or VLC or other?
-        pass
-
-    @commands.command(aliases=("yt",))
-    async def play_video(self, video_url: Union[str, Path]):
-        # Play videos using openCV
-        pass
 
 
 def prepare(bot: commands.Bot):
