@@ -28,7 +28,7 @@ def gather(**kwargs):
         configs[arg] = conf
 
     for config in configs:
-        logging.info("Gathered {config}.")
+        logging.info(f"Gathered {config}.")
     return configs
 
 

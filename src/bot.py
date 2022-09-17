@@ -11,6 +11,9 @@ from twitchio.ext import commands, routines
 from configs import gather
 
 
+logging.basicConfig(level="INFO")
+
+
 class Bot(commands.Bot):
 
     token: str
@@ -36,7 +39,7 @@ class Bot(commands.Bot):
         )
 
         # Add found cogs
-        for file in sorted(Path("cogs").iterdir()):
+        for file in sorted(Path(__file__).parent.joinpath("cogs").iterdir()):
             if file.suffix == ".py":
                 self.load_module(f"cogs.{file.stem}")
 
@@ -62,7 +65,7 @@ class Bot(commands.Bot):
 
     @routines.routine(minutes=10)
     async def hydrate(self, channel):
-        if self.hydrate.completed_iterations != 0:
+        if not self.hydrate.completed_iterations:
             logging.info(f"hydrate routine started at {self.hydrate.start_time}")
         else:
             msg = "/me should be drinking water!"
